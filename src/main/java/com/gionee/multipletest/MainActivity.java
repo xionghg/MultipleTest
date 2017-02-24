@@ -24,6 +24,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.gionee.multipletest.pic.Picture;
+import com.gionee.multipletest.pic.PictureAdapter;
 import com.gionee.multipletest.testDownload.TestDownloadActivity;
 
 import java.util.ArrayList;
@@ -35,14 +37,14 @@ public class MainActivity extends AppCompatActivity{
 
     private DrawerLayout mDrawerLayout;
 
-    private Fruit[] mFruits = {new Fruit("Apple", R.drawable.apple),
-            new Fruit("Banana", R.drawable.banana),
-            new Fruit("Orange", R.drawable.orange),
-            new Fruit("Watermelon", R.drawable.watermelon)};
+    private Picture[] mPictures = {new Picture("Apple", "http://img5.imgtn.bdimg.com/it/u=2401114046,3538130347&fm=23&gp=0.jpg"),
+            new Picture("Banana", "http://img2.imgtn.bdimg.com/it/u=3995418656,1514573242&fm=23&gp=0.jpg"),
+            new Picture("Orange", "http://img1.imgtn.bdimg.com/it/u=4164005734,1428298849&fm=11&gp=0.jpg"),
+            new Picture("Watermelon", "http://img5.imgtn.bdimg.com/it/u=2753901820,313044919&fm=23&gp=0.jpg")};
 
-    private List<Fruit> mFruitList = new ArrayList<>();
+    private List<Picture> mPictureList = new ArrayList<>();
 
-    private FruitAdapter mFruitAdapter;
+    private PictureAdapter mPictureAdapter;
 
     private SwipeRefreshLayout swipeRefresh;
 
@@ -94,25 +96,26 @@ public class MainActivity extends AppCompatActivity{
         }
 
 
-        initFruits();
+        initPictures();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
-        mFruitAdapter = new FruitAdapter(mFruitList);
-        recyclerView.setAdapter(mFruitAdapter);
+        mPictureAdapter = new PictureAdapter(mPictureList);
+        recyclerView.setAdapter(mPictureAdapter);
 
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshFruits();
+                refreshPictures();
             }
         });
 
     }
 
-    private void refreshFruits() {
+
+    private void refreshPictures() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -124,8 +127,8 @@ public class MainActivity extends AppCompatActivity{
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        initFruits();
-                        mFruitAdapter.notifyDataSetChanged();
+                        initPictures();
+                        mPictureAdapter.notifyDataSetChanged();
                         swipeRefresh.setRefreshing(false);
                     }
                 });
@@ -133,12 +136,12 @@ public class MainActivity extends AppCompatActivity{
         }).start();
     }
 
-    private void initFruits() {
-        mFruitList.clear();
+    private void initPictures() {
+        mPictureList.clear();
         for (int i = 0; i < 50; i++) {
             Random random = new Random();
-            int index = random.nextInt(mFruits.length);
-            mFruitList.add(mFruits[index]);
+            int index = random.nextInt(mPictures.length);
+            mPictureList.add(mPictures[index]);
         }
     }
 

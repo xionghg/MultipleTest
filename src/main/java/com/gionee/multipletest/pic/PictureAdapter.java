@@ -1,4 +1,4 @@
-package com.gionee.multipletest;
+package com.gionee.multipletest.pic;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.gionee.multipletest.R;
 
 import java.util.List;
 
@@ -18,27 +19,27 @@ import java.util.List;
  * Created by xionghg on 17-2-24.
  */
 
-public class FruitAdapter extends RecyclerView.Adapter<FruitAdapter.ViewHolder> {
+public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHolder> {
 
     private Context mContext;
 
-    private List<Fruit> mFruitList;
+    private List<Picture> mPictureList;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         CardView cardView;
-        ImageView fruitImage;
-        TextView fruitName;
+        ImageView pictureImage;
+        TextView pictureName;
 
         public ViewHolder(View view) {
             super(view);
             cardView = (CardView) view;
-            fruitImage = (ImageView) view.findViewById(R.id.fruit_image);
-            fruitName = (TextView) view.findViewById(R.id.fruit_name);
+            pictureImage = (ImageView) view.findViewById(R.id.picture_image);
+            pictureName = (TextView) view.findViewById(R.id.picture_name);
         }
     }
 
-    public FruitAdapter(List<Fruit> fruitList) {
-        mFruitList = fruitList;
+    public PictureAdapter(List<Picture> pictureList) {
+        mPictureList = pictureList;
     }
 
     @Override
@@ -46,16 +47,16 @@ public class FruitAdapter extends RecyclerView.Adapter<FruitAdapter.ViewHolder> 
         if (mContext == null) {
             mContext = parent.getContext();
         }
-        View view = LayoutInflater.from(mContext).inflate(R.layout.fruit_item, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.picture_item, parent, false);
         final ViewHolder holder = new ViewHolder(view);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                Fruit fruit = mFruitList.get(position);
-                Intent intent = new Intent(mContext, FruitActivity.class);
-                intent.putExtra(FruitActivity.FRUIT_NAME, fruit.getName());
-                intent.putExtra(FruitActivity.FRUIT_IMAGE_ID, fruit.getImageId());
+                Picture picture = mPictureList.get(position);
+                Intent intent = new Intent(mContext, PictureActivity.class);
+                intent.putExtra(PictureActivity.PICTURE_NAME, picture.getName());
+                intent.putExtra(PictureActivity.PICTURE_URL, picture.getPictureUrl());
                 mContext.startActivity(intent);
             }
         });
@@ -64,13 +65,13 @@ public class FruitAdapter extends RecyclerView.Adapter<FruitAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Fruit fruit = mFruitList.get(position);
-        holder.fruitName.setText(fruit.getName());
-        Glide.with(mContext).load(fruit.getImageId()).into(holder.fruitImage);
+        Picture picture = mPictureList.get(position);
+        holder.pictureName.setText(picture.getName());
+        Glide.with(mContext).load(picture.getPictureUrl()).into(holder.pictureImage);
     }
 
     @Override
     public int getItemCount() {
-        return mFruitList.size();
+        return mPictureList.size();
     }
 }
